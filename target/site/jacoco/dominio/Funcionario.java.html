@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Funcionario.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Projeto Maven</a> &gt; <a href="index.source.html" class="el_package">dominio</a> &gt; <span class="el_source">Funcionario.java</span></div><h1>Funcionario.java</h1><pre class="source lang-java linenums">package dominio;
+
+/**
+ *
+ * @author Thiago
+ */
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L10">public class Funcionario {</span>
+    
+    private String nome;
+    private String senha;
+    private String email;
+    private String RG;
+    private boolean status_GERENTE;
+    private String ID_departamento;
+    private Departamento departamento ;
+    private String empresa;
+<span class="nc" id="L20">    private List&lt;Equipe&gt;Funcionario_Equipe = new ArrayList&lt;Equipe&gt;();</span>
+
+    public String getEmpresa() {
+<span class="nc" id="L23">        return empresa;</span>
+    }
+
+    public void setEmpresa(String empresa) {
+<span class="nc" id="L27">        this.empresa = empresa;</span>
+<span class="nc" id="L28">    }</span>
+    
+
+    public String getID_departamento() {
+<span class="nc" id="L32">        return ID_departamento;</span>
+    }
+
+    public void setID_departamento(String ID_departamento) {
+<span class="nc" id="L36">        this.ID_departamento = ID_departamento;</span>
+<span class="nc" id="L37">    }</span>
+    
+    public Departamento getDepartamento() {
+<span class="nc" id="L40">        return departamento;</span>
+    }
+   
+    public String getNome() {
+<span class="nc" id="L44">        return nome;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="nc" id="L48">        this.nome = nome;</span>
+<span class="nc" id="L49">    }</span>
+
+    public String getSenha() {
+<span class="nc" id="L52">        return senha;</span>
+    }
+
+    public void setSenha(String senha) {
+<span class="nc" id="L56">        this.senha = senha;</span>
+<span class="nc" id="L57">    }</span>
+
+    public String getEmail() {
+<span class="nc" id="L60">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="nc" id="L64">        this.email = email;</span>
+<span class="nc" id="L65">    }</span>
+
+    public String getRG() {
+<span class="nc" id="L68">        return RG;</span>
+    }
+
+    public void setRG(String RG) {
+<span class="nc" id="L72">        this.RG = RG;</span>
+<span class="nc" id="L73">    }</span>
+
+    public boolean isStatus_GERENTE() {
+<span class="nc" id="L76">        return status_GERENTE;</span>
+    }
+
+    public void setStatus_GERENTE(boolean status_GERENTE) {
+<span class="nc" id="L80">        this.status_GERENTE = status_GERENTE;</span>
+<span class="nc" id="L81">    }</span>
+ 
+    /*public void criar_departamento(String ID,String nome,String coordenador){
+        if(status_GERENTE == true){
+            Departamento novo = new Departamento();
+            novo.setID(ID);
+            novo.setNome(nome);
+            novo.setCoodenador(coordenador);
+            Funcionario_Departamento.add(novo);
+        }
+    }*/
+    public void setDepartamento(Departamento Departamento){
+        
+<span class="nc" id="L94">        departamento=Departamento;</span>
+<span class="nc" id="L95">    }</span>
+    
+    
+    public void criar_equipe(int ID,String nome,String representante){
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if(status_GERENTE == true){</span>
+<span class="nc" id="L100">            Equipe novo = new Equipe();</span>
+<span class="nc" id="L101">            novo.setID(ID);</span>
+<span class="nc" id="L102">            novo.setNome(nome);</span>
+<span class="nc" id="L103">            novo.setRepresentante(representante);</span>
+<span class="nc" id="L104">            Funcionario_Equipe.add(novo);</span>
+        }
+<span class="nc" id="L106">    }</span>
+
+    public void criar_projeto_Departamento(String nome,String prazo,String Departamento,String Equipe){
+<span class="nc" id="L109">        Projeto novo = new Projeto();</span>
+<span class="nc" id="L110">        novo.setNome(nome);</span>
+<span class="nc" id="L111">        novo.setPrazo(prazo);</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if(status_GERENTE == true){</span>
+<span class="nc" id="L113">            departamento.criar_projeto(nome, prazo);</span>
+<span class="nc" id="L114">            criar_projeto_Equipe(nome,prazo,Equipe);</span>
+            
+                }
+            
+        
+<span class="nc" id="L119">    }</span>
+ 
+    public void criar_projeto_Equipe(String nome,String prazo,String Equipe){
+<span class="nc" id="L122">        Projeto novo = new Projeto();</span>
+<span class="nc" id="L123">        novo.setNome(nome);</span>
+<span class="nc" id="L124">        novo.setPrazo(prazo);</span>
+<span class="nc" id="L125">        int aux = Funcionario_Equipe.size();</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if(aux &gt;=0 ){</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            for(int anda=0;anda &lt; aux;anda++){</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">                if(Funcionario_Equipe.get(anda).getNome().equals(Equipe)){</span>
+<span class="nc" id="L129">                    Funcionario_Equipe.get(anda).criar_projeto(nome, prazo);</span>
+<span class="nc" id="L130">                    return;</span>
+                }
+            }
+        }
+<span class="nc" id="L134">    }</span>
+    
+    public void  criar_Tarefa(String nome_projeto,String tarefa){
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if(status_GERENTE == true){</span>
+<span class="nc" id="L138">            departamento.Criar_Tarefa_Departamento(nome_projeto, tarefa);</span>
+          
+            
+        }
+<span class="nc" id="L142">    }</span>
+    
+    
+    public void  deletar_Equipe(String Equipe){
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        if(status_GERENTE == true){</span>
+<span class="nc" id="L147">            int aux = Funcionario_Equipe.size();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if(aux &gt;=0 ){</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">                for(int anda=0;anda &lt; aux;anda++){</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                    if(Funcionario_Equipe.get(anda).getNome().equals(Equipe)){</span>
+<span class="nc" id="L151">                        Funcionario_Equipe.remove(anda);</span>
+<span class="nc" id="L152">                        return;</span>
+                    }
+                }
+<span class="nc" id="L155">                System.out.println(&quot;Não encontrou a Equipe &quot;);</span>
+            }else{
+<span class="nc" id="L157">                System.out.println(&quot;Lista Equipe vazia&quot;);</span>
+            }
+        }
+<span class="nc" id="L160">    }</span>
+    
+    
+    public void  deletar_Tarefa(String nome_projeto,String tarefa){
+        
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if(departamento.getProjeto(nome_projeto).equals(nome_projeto)){</span>
+<span class="nc" id="L166">                departamento.Deletar_Tarefa(nome_projeto, tarefa);</span>
+            }
+        
+<span class="nc" id="L169">    }</span>
+    
+    public void  Atribuir_Funcionario_Equipe(Funcionario funcionario,String Equipe){
+<span class="nc" id="L172">        int limite_Equipe = Funcionario_Equipe.size();</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        for(int acha =0;acha &lt; limite_Equipe;acha++){</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            if(Funcionario_Equipe.get(acha).getNome().equals(Equipe)){</span>
+<span class="nc" id="L175">                Funcionario_Equipe.get(acha).Colocar_Funcionario(funcionario);</span>
+<span class="nc" id="L176">                break;</span>
+            }
+        }
+        
+<span class="nc" id="L180">    }</span>
+    public void Printt(){
+        
+<span class="nc" id="L183">        System.out.printf(&quot;funcionario=%s status=%b email=%s\n&quot;,nome,status_GERENTE,email );</span>
+<span class="nc" id="L184">    }</span>
+<span class="nc" id="L185">    public static void main(String[] args){} </span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CEOBD.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Projeto Maven</a> &gt; <a href="index.source.html" class="el_package">banco</a> &gt; <span class="el_source">CEOBD.java</span></div><h1>CEOBD.java</h1><pre class="source lang-java linenums">package banco;
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+
+import dominio.CEO;
+import dominio.Funcionario;
+import dominio.Departamento;
+import dominio.Projeto;
+import dominio.Equipe;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+<span class="nc" id="L18">public class CEOBD  {</span>
+    // Connect to your database.
+    // Replace server name, username, and password with your credentials
+    public static void Inserir(CEO ceoNew){
+        
+<span class="nc" id="L23">        String connectionUrl =&quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;</span>
+        
+        
+        int resultSet ;
+        try {
+<span class="nc" id="L28">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L29">                Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L30">                PreparedStatement statement = connection.prepareStatement(&quot;INSERT INTO CEO (nomeCeo,empresa,email ,senha,telefone) VALUES(?,?,?,?,?)&quot;);</span>
+<span class="nc" id="L31">                statement.setString(1,ceoNew.getNome());</span>
+<span class="nc" id="L32">                statement.setString(2,ceoNew.getEmpresa());</span>
+<span class="nc" id="L33">                statement.setString(3,ceoNew.getEmail());</span>
+<span class="nc" id="L34">                statement.setString(4,ceoNew.getSenha());</span>
+<span class="nc" id="L35">                statement.setString(5,ceoNew.getTelefone());</span>
+                // Create and execute a SELECT SQL statement.
+<span class="nc" id="L37">                resultSet=statement.executeUpdate();</span>
+                // Print results from select statement
+<span class="nc" id="L39">            }catch (SQLException ex) {</span>
+<span class="nc" id="L40">            Logger.getLogger(CEOBD.class.getName()).log(Level.SEVERE, null, ex);</span>
+            
+<span class="nc" id="L42">        }</span>
+        
+<span class="nc" id="L44">    }</span>
+    public static void excluir(String email){
+<span class="nc" id="L46">    String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        
+        int resultSet ;
+        
+        try {
+<span class="nc" id="L53">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L54">            Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L55">            PreparedStatement statement = connection.prepareStatement(&quot;DELETE FROM CEO WHERE(email=?)&quot;);{</span>
+            // Create and execute a SELECT SQL statement.
+<span class="nc" id="L57">            statement.setString(1, email);</span>
+<span class="nc" id="L58">            resultSet=statement.executeUpdate();</span>
+            // Print results from select statement
+        }   
+<span class="nc" id="L61">        }catch (SQLException ex) {</span>
+<span class="nc" id="L62">            Logger.getLogger(CEOBD.class.getName()).log(Level.SEVERE, null, ex);</span>
+            
+<span class="nc" id="L64">        }</span>
+<span class="nc" id="L65">    }</span>
+    public static void alterar(CEO c){
+<span class="nc" id="L67">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        
+        int resultSet ;
+     
+         try {
+<span class="nc" id="L74">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L75">            Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L76">                PreparedStatement statement = connection.prepareStatement(&quot;UPDATE CEO SET telefone=?,senha=? WHERE email=?;&quot;);{</span>
+                // Create and execute a SELECT SQL statement.
+<span class="nc" id="L78">                statement.setString(1, c.getTelefone());</span>
+<span class="nc" id="L79">                statement.setString(2, c.getSenha());</span>
+<span class="nc" id="L80">                statement.setString(3, c.getEmail());</span>
+<span class="nc" id="L81">                resultSet=statement.executeUpdate();</span>
+                // Print results from select statement
+            }}
+<span class="nc" id="L84">        catch (SQLException e) {</span>
+<span class="nc" id="L85">            e.printStackTrace();</span>
+<span class="nc" id="L86">        }</span>
+<span class="nc" id="L87">    }</span>
+    public static boolean validarEmail(String email){
+<span class="nc" id="L89">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        
+        ResultSet resultSet ;
+        //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+       
+         try {
+<span class="nc" id="L97">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L98">            Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L99">            PreparedStatement statement = connection.prepareStatement(&quot;select * FROM CEO c INNER JOIN Funcionario f on(c.empresa=f.empresa and (c.email=? or f.email=?))&quot;);{</span>
+                
+                // Create and execute a SELECT SQL statement.
+<span class="nc" id="L102">                statement.setString(1, email);</span>
+<span class="nc" id="L103">                statement.setString(2, email);</span>
+                
+<span class="nc" id="L105">                resultSet=statement.executeQuery();</span>
+                
+                //String s = resultSet.next().getString(&quot;email&quot;);
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                if (resultSet.next() == false) {</span>
+<span class="nc" id="L109">                    System.out.println(&quot;ResultSet in empty in Java&quot;);</span>
+<span class="nc" id="L110">                    return false;</span>
+                } else {
+                    
+                    //String s = resultSet.getString(&quot;email&quot;);
+<span class="nc" id="L114">                    return true ;</span>
+                }}
+            
+            // Print results from select statement
+               
+        }
+<span class="nc" id="L120">        catch (SQLException e) {</span>
+<span class="nc" id="L121">            e.printStackTrace();</span>
+<span class="nc" id="L122">            return false;</span>
+        }
+    
+    }
+    public static CEO procurarPorLoginSenha(String email, String senha){
+<span class="nc" id="L127">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+        //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+       
+         try {
+<span class="nc" id="L134">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+            CEO ceo_novo;
+<span class="nc" id="L136">            Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L137">                PreparedStatement statement = connection.prepareStatement(&quot;SELECT *  FROM CEO WHERE email=? AND senha=? ;&quot;);{</span>
+                // Create and execute a SELECT SQL statement.
+<span class="nc" id="L139">                statement.setString(1, email);</span>
+<span class="nc" id="L140">                statement.setString(2, senha);</span>
+<span class="nc" id="L141">                ceo_novo = new CEO();</span>
+<span class="nc" id="L142">                resultSet=statement.executeQuery();</span>
+                //String s = resultSet.next().getString(&quot;email&quot;);
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                if (resultSet.next() == false) {</span>
+<span class="nc" id="L145">                    System.out.println(&quot;ResultSet in empty in Java&quot;);</span>
+<span class="nc" id="L146">                    return null;</span>
+                } else {
+<span class="nc" id="L148">                    ceo_novo.setEmpresa(resultSet.getString(&quot;empresa&quot;));</span>
+<span class="nc" id="L149">                    ceo_novo.setEmail(resultSet.getString(&quot;email&quot;));</span>
+<span class="nc" id="L150">                    ceo_novo.setNome(resultSet.getString(&quot;nomeCeo&quot;));</span>
+                    
+                    
+                }}
+<span class="nc" id="L154">            return ceo_novo;</span>
+            // Print results from select statement
+               
+        }
+<span class="nc" id="L158">        catch (SQLException e) {</span>
+<span class="nc" id="L159">            e.printStackTrace();</span>
+<span class="nc" id="L160">            return null;</span>
+        }
+        
+    }
+    public static String procurarCodDep(String nomeD,String empresa){
+<span class="nc" id="L165">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+        try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L171">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L172">            Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L173">            PreparedStatement statement = connection.prepareStatement(&quot;SELECT ID  FROM Departamento WHERE nomeD=? AND empresa=? ;&quot;);</span>
+            
+            // Create and execute a SELECT SQL statement.
+<span class="nc" id="L176">            statement.setString(1, nomeD);</span>
+<span class="nc" id="L177">            statement.setString(2, empresa);</span>
+            String ID_departamento;
+<span class="nc" id="L179">            resultSet=statement.executeQuery();</span>
+            
+            //String s = resultSet.next().getString(&quot;email&quot;);
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            if (resultSet.next() == false) {</span>
+<span class="nc" id="L183">               System.out.println(&quot;ResultSet in empty in Java&quot;);</span>
+<span class="nc" id="L184">               connection.close();</span>
+<span class="nc" id="L185">               return null;</span>
+           } else {
+<span class="nc" id="L187">                ID_departamento=resultSet.getString(1);</span>
+<span class="nc" id="L188">                connection.close();</span>
+<span class="nc" id="L189">                return ID_departamento;</span>
+           }
+      
+        
+            
+            // Print results from select statement
+               
+        }
+<span class="nc" id="L197">        catch (SQLException e) {</span>
+<span class="nc" id="L198">            e.printStackTrace();</span>
+<span class="nc" id="L199">            return null;</span>
+        }
+     
+               
+      
+    }
+    public static void Cadastrar_Funcionario(Funcionario novo){
+<span class="nc" id="L206">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+        try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L212">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L213">           Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L214">           PreparedStatement statement = connection.prepareStatement(&quot;insert into Funcionario&quot;</span>
+                        +&quot; (nomeF,senha,email,RG,Status_gerente,ID_departamento,empresa) values(?,?,?,?,?,?,?)&quot;);
+<span class="nc" id="L216">            statement.setString(1,novo.getNome());</span>
+<span class="nc" id="L217">            statement.setString(2,&quot;123456&quot;);</span>
+<span class="nc" id="L218">            statement.setString(3,novo.getEmail());</span>
+<span class="nc" id="L219">            statement.setString(4,novo.getRG());</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">            if(novo.isStatus_GERENTE()){</span>
+<span class="nc" id="L221">                statement.setString(5,&quot;Gerente&quot;);</span>
+            }
+            else{
+<span class="nc" id="L224">               statement.setString(5,&quot;Funcionario&quot;);</span>
+            }
+<span class="nc" id="L226">            statement.setString(6,novo.getID_departamento());</span>
+<span class="nc" id="L227">            statement.setString(7,novo.getEmpresa());</span>
+<span class="nc" id="L228">            resultSet=statement.executeUpdate();</span>
+                
+    }    
+<span class="nc" id="L231">    catch (SQLException e) {</span>
+<span class="nc" id="L232">            e.printStackTrace();</span>
+<span class="nc" id="L233">        }</span>
+<span class="nc" id="L234">    }  </span>
+    public static void Cadastrar_Departamento(Departamento novo){
+<span class="nc" id="L236">    String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+        try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L242">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L243">            Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L244">                PreparedStatement statement = connection.prepareStatement(&quot;insert into Departamento\n&quot; +</span>
+&quot;(nomeD,empresa,ID,coordenador) values(?,?,?,?)&quot;);
+<span class="nc" id="L246">            statement.setString(1,novo.getNome());</span>
+<span class="nc" id="L247">            statement.setString(2,novo.getEmpresa());</span>
+<span class="nc" id="L248">            statement.setString(3,novo.getID());</span>
+<span class="nc" id="L249">            statement.setString(4,novo.getCoodenador());</span>
+<span class="nc" id="L250">             resultSet=statement.executeUpdate();</span>
+        }
+<span class="nc" id="L252">        catch (SQLException e) {</span>
+<span class="nc" id="L253">            e.printStackTrace();</span>
+<span class="nc" id="L254">        }</span>
+    
+<span class="nc" id="L256">    }</span>
+    public static void Criar_Equipe(Equipe equipe){
+<span class="nc" id="L258">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+        try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L264">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L265">            Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L266">                PreparedStatement statement = connection.prepareStatement(&quot; insert into Equipe\n&quot; +</span>
+&quot;(ID,ID_departamento,nomeE)values(?,?,?)&quot;);
+<span class="nc" id="L268">            statement.setString(1,null);</span>
+<span class="nc" id="L269">            statement.setString(2,equipe.getID_departamento());</span>
+<span class="nc" id="L270">            statement.setString(3,equipe.getNome());</span>
+            
+<span class="nc" id="L272">             resultSet=statement.executeUpdate();</span>
+        }
+<span class="nc" id="L274">        catch (SQLException e) {</span>
+<span class="nc" id="L275">            e.printStackTrace();</span>
+<span class="nc" id="L276">        }</span>
+        
+        
+<span class="nc" id="L279">    }</span>
+    public static int ProcurarID_Equipe(String nomeE,String ID_departamento){
+<span class="nc" id="L281">    String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        int id;
+        ResultSet resultSet ;
+        //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+       
+        try{
+<span class="nc" id="L288">            Connection connection = DriverManager.getConnection(connectionUrl);        </span>
+<span class="nc" id="L289">            PreparedStatement statement = connection.prepareStatement(&quot;select ID FROM Equipe where nomeE=? AND ID_Departamento=? &quot;);{</span>
+<span class="nc" id="L290">            statement.setString(1,nomeE);</span>
+<span class="nc" id="L291">            statement.setString(2,ID_departamento);</span>
+<span class="nc" id="L292">            resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">            if (resultSet.next() == false) {</span>
+<span class="nc" id="L294">               System.out.println(&quot;ResultSet in empty in Java&quot;);</span>
+<span class="nc" id="L295">               connection.close();</span>
+<span class="nc" id="L296">               return -1;</span>
+           } else {
+                
+<span class="nc" id="L299">                id=resultSet.getInt(1);</span>
+<span class="nc" id="L300">                connection.close();</span>
+<span class="nc" id="L301">                return id;</span>
+              
+           }
+        }
+        }
+<span class="nc" id="L306">        catch (SQLException e) {</span>
+<span class="nc" id="L307">            e.printStackTrace();</span>
+<span class="nc" id="L308">           return -1;</span>
+        }
+        
+}
+    public static void Atribuir_Funcionario_Equipe(Funcionario fun,Equipe equipe){
+<span class="nc bnc" id="L313" title="All 2 branches missed.">        if(fun.getID_departamento().equals(equipe.getID_departamento())){</span>
+<span class="nc" id="L314">             String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+            try {
+                //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L320">                DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L321">            Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L322">                PreparedStatement statement = connection.prepareStatement(&quot; insert into Funcionario_Equipe\n&quot; +</span>
+&quot;(ID,ID_departamento,ID_Equipe,email_Funcionario) values(?,?,?,?);&quot;);
+<span class="nc" id="L324">            statement.setString(1,null);</span>
+<span class="nc" id="L325">            statement.setString(2,fun.getID_departamento());</span>
+<span class="nc" id="L326">            statement.setInt(3,equipe.getID());</span>
+<span class="nc" id="L327">            statement.setString(4,fun.getEmail());</span>
+<span class="nc" id="L328">            resultSet=statement.executeUpdate();</span>
+        }
+<span class="nc" id="L330">         catch (SQLException e) {</span>
+<span class="nc" id="L331">            e.printStackTrace();</span>
+<span class="nc" id="L332">        }</span>
+        }
+    
+<span class="nc" id="L335">    }</span>
+    public static void Criar_Projeto(Projeto p){
+<span class="nc" id="L337">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+        try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L343">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L344">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L345">                PreparedStatement statement = connection.prepareStatement(&quot; insert into Projeto\n&quot; +</span>
+&quot;(ID,ID_departamento,Criacao,nomeE) values(?,?,CURDATE( ),?);&quot;);
+<span class="nc" id="L347">            statement.setString(1,null);</span>
+<span class="nc" id="L348">            statement.setString(2,p.getID_Departamento());</span>
+            
+<span class="nc" id="L350">            statement.setString(3,p.getNome());</span>
+<span class="nc" id="L351">            resultSet=statement.executeUpdate();</span>
+        }
+<span class="nc" id="L353">        catch (SQLException e) {</span>
+<span class="nc" id="L354">            e.printStackTrace();</span>
+<span class="nc" id="L355">        }</span>
+<span class="nc" id="L356">    }</span>
+    public static int  ProcurarIDProjeto(String nomeP,String ID_departamento){
+<span class="nc" id="L358">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+        try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L364">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L365">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L366">                PreparedStatement statement = connection.prepareStatement(&quot;SELECT ID  FROM Projeto WHERE nomeE=? AND ID_departamento=? ;&quot;);</span>
+            
+            // Create and execute a SELECT SQL statement.
+<span class="nc" id="L369">            statement.setString(1, nomeP);</span>
+<span class="nc" id="L370">            statement.setString(2, ID_departamento);</span>
+<span class="nc" id="L371">            resultSet=statement.executeQuery();</span>
+            int id;
+            //String s = resultSet.next().getString(&quot;email&quot;);
+<span class="nc bnc" id="L374" title="All 2 branches missed.">            if (resultSet.next() == false) {</span>
+<span class="nc" id="L375">               System.out.println(&quot;ResultSet in empty in Java&quot;);</span>
+<span class="nc" id="L376">               connection.close();</span>
+<span class="nc" id="L377">               return -1;</span>
+           } else {
+<span class="nc" id="L379">                id=resultSet.getInt(1);</span>
+<span class="nc" id="L380">                connection.close();</span>
+<span class="nc" id="L381">                return id;</span>
+           }
+      
+        
+            
+            // Print results from select statement
+               
+        }
+<span class="nc" id="L389">        catch (SQLException e) {</span>
+<span class="nc" id="L390">            e.printStackTrace();</span>
+<span class="nc" id="L391">            return -1;</span>
+        }
+     
+    }
+    public static void Atribuir_Projeto_Equipe(Projeto p,Equipe e){
+<span class="nc bnc" id="L396" title="All 2 branches missed.">    if(p.getID_Departamento().equals(e.getID_departamento())){</span>
+<span class="nc" id="L397">             String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+        try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L403">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L404">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L405">                PreparedStatement statement = connection.prepareStatement(&quot; insert into Projeto_Equipe\n&quot; +</span>
+&quot;(ID,ID_Equipe,ID_departamento,ID_projeto) values(?,?,?,?);&quot;);
+<span class="nc" id="L407">            statement.setString(1,null);</span>
+<span class="nc" id="L408">            statement.setInt(2,e.getID());</span>
+<span class="nc" id="L409">            statement.setString(3,p.getID_Departamento());</span>
+<span class="nc" id="L410">            statement.setInt(4,p.getId());</span>
+<span class="nc" id="L411">            resultSet=statement.executeUpdate();</span>
+        }
+<span class="nc" id="L413">         catch (SQLException ex) {</span>
+<span class="nc" id="L414">            ex.printStackTrace();</span>
+<span class="nc" id="L415">         }</span>
+    }
+    
+<span class="nc" id="L418">    }</span>
+    public static void Atribuir_Tarefa_Projeto(int ID_Projeto,String Tarefa){
+<span class="nc" id="L420">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+        try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L426">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L427">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L428">                PreparedStatement statement = connection.prepareStatement(&quot; insert into Tarefa\n&quot; +</span>
+&quot;(ID,ID_projeto,nomeT) VALUES(?,?,?)&quot;);
+<span class="nc" id="L430">            statement.setString(1,null);</span>
+<span class="nc" id="L431">            statement.setInt(2,ID_Projeto);</span>
+<span class="nc" id="L432">            statement.setString(3,Tarefa);</span>
+<span class="nc" id="L433">            resultSet=statement.executeUpdate();</span>
+            
+        }
+<span class="nc" id="L436">        catch (SQLException e) {</span>
+<span class="nc" id="L437">            e.printStackTrace();</span>
+<span class="nc" id="L438">         }</span>
+        
+<span class="nc" id="L440">    }</span>
+    public static Funcionario ProcurarFuncionario(String email,String senha){
+<span class="nc" id="L442">       String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+        try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L448">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L449">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L450">        PreparedStatement statement = connection.prepareStatement(&quot;SELECT *  FROM Funcionario WHERE email=? AND senha=? ;&quot;);</span>
+            
+            // Create and execute a SELECT SQL statement.
+<span class="nc" id="L453">            statement.setString(1, email);</span>
+<span class="nc" id="L454">            statement.setString(2, senha);</span>
+<span class="nc" id="L455">            Funcionario fun= new Funcionario();</span>
+<span class="nc" id="L456">            resultSet=statement.executeQuery();</span>
+            
+            //String s = resultSet.next().getString(&quot;email&quot;);
+<span class="nc bnc" id="L459" title="All 2 branches missed.">            if (resultSet.next() == false) {</span>
+<span class="nc" id="L460">               System.out.println(&quot;ResultSet in empty in Java&quot;);</span>
+<span class="nc" id="L461">               connection.close();</span>
+<span class="nc" id="L462">               return null;</span>
+           } else {
+<span class="nc" id="L464">              fun.setEmpresa(resultSet.getString(&quot;empresa&quot;));</span>
+<span class="nc" id="L465">              fun.setEmail(resultSet.getString(&quot;email&quot;)); </span>
+<span class="nc" id="L466">              fun.setNome(resultSet.getString(&quot;nomeF&quot;));</span>
+<span class="nc" id="L467">              fun.setID_departamento(resultSet.getString(&quot;ID_departamento&quot;));</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">              if(&quot;Gerente&quot;.equals(resultSet.getString(&quot;Status_Gerente&quot;))){</span>
+<span class="nc" id="L469">                  fun.setStatus_GERENTE(true);</span>
+              }
+              else{
+<span class="nc" id="L472">                fun.setStatus_GERENTE(false);</span>
+              }
+<span class="nc" id="L474">              connection.close();</span>
+<span class="nc" id="L475">              return fun;</span>
+              
+           }
+      
+            
+            
+            // Print results from select statement
+               
+        }
+<span class="nc" id="L484">        catch (SQLException e) {</span>
+<span class="nc" id="L485">            e.printStackTrace();</span>
+<span class="nc" id="L486">            return null;</span>
+        }
+   }
+    public static void Deletar_Departamento(String id){
+<span class="nc" id="L490">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+        
+       
+       try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L498">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L499">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L500">                PreparedStatement statement = connection.prepareStatement(&quot; select ID from Projeto where(ID_departamento=?);&quot;);</span>
+<span class="nc" id="L501">            statement.setString(1, id);</span>
+<span class="nc" id="L502">            resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">            while(resultSet.next()){</span>
+<span class="nc" id="L504">                Deletar_Projeto(resultSet.getInt(1));</span>
+                
+            }
+<span class="nc" id="L507">            statement = connection.prepareStatement(&quot; select ID from Equipe where(ID_Departamento=?);&quot;);</span>
+<span class="nc" id="L508">            statement.setString(1, id);</span>
+<span class="nc" id="L509">            resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">            while(resultSet.next()){</span>
+              
+<span class="nc" id="L512">                Deletar_Equipe(resultSet.getInt(1));</span>
+            }
+<span class="nc" id="L514">            statement = connection.prepareStatement(&quot; select email from Funcionario where(ID_Departamento=?);&quot;);</span>
+<span class="nc" id="L515">            statement.setString(1, id);</span>
+<span class="nc" id="L516">            resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L517" title="All 2 branches missed.">            while(resultSet.next()){</span>
+              
+<span class="nc" id="L519">                Deletar_Funcionario(resultSet.getString(1));</span>
+            }
+<span class="nc" id="L521">            PreparedStatement statement2 = connection.prepareStatement(&quot;DELETE FROM Projeto where ID=?&quot;);</span>
+<span class="nc" id="L522">            statement2.setString(1, id);</span>
+<span class="nc" id="L523">            int result=statement2.executeUpdate();</span>
+        }
+<span class="nc" id="L525">        catch (SQLException e) {</span>
+<span class="nc" id="L526">            e.printStackTrace();</span>
+<span class="nc" id="L527">        }</span>
+<span class="nc" id="L528">    }</span>
+    public static void Deletar_Tarefa(int ID){
+<span class="nc" id="L530">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+        
+       
+        try{
+<span class="nc" id="L537">            Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L538">            PreparedStatement statement = connection.prepareStatement(&quot; delete from Tarefa where (ID=?);&quot;);{</span>
+<span class="nc" id="L539">            statement.setInt(1, ID);</span>
+<span class="nc" id="L540">            resultSet=statement.executeUpdate();</span>
+<span class="nc" id="L541">        }}catch (SQLException e) {</span>
+<span class="nc" id="L542">            e.printStackTrace();</span>
+<span class="nc" id="L543">        }</span>
+<span class="nc" id="L544">    }</span>
+    public static void Deletar_Projeto_Equipe(int ID){
+<span class="nc" id="L546">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+        
+        try {
+<span class="nc" id="L552">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L553">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L554">                PreparedStatement statement = connection.prepareStatement(&quot; delete from Projeto_Equipe where (ID=?);&quot;);</span>
+<span class="nc" id="L555">            statement.setInt(1, ID);</span>
+<span class="nc" id="L556">            resultSet=statement.executeUpdate();</span>
+        }
+<span class="nc" id="L558">        catch (SQLException e) {</span>
+<span class="nc" id="L559">            e.printStackTrace();</span>
+<span class="nc" id="L560">        }</span>
+<span class="nc" id="L561">    }</span>
+    public static void Deletar_Projeto(int id){
+<span class="nc" id="L563">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+        
+       
+       try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L571">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L572">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L573">                PreparedStatement statement = connection.prepareStatement(&quot; select ID from Projeto_Equipe where(ID_projeto=?);&quot;);</span>
+<span class="nc" id="L574">            statement.setInt(1, id);</span>
+<span class="nc" id="L575">            resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">            while(resultSet.next()){</span>
+<span class="nc" id="L577">                Deletar_Projeto_Equipe(resultSet.getInt(1));</span>
+                
+            }
+<span class="nc" id="L580">            statement = connection.prepareStatement(&quot; select ID from Tarefa where(ID_projeto=?);&quot;);</span>
+<span class="nc" id="L581">            statement.setInt(1, id);</span>
+<span class="nc" id="L582">            resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">            while(resultSet.next()){</span>
+              
+<span class="nc" id="L585">                Deletar_Tarefa(resultSet.getInt(1));</span>
+            }
+<span class="nc" id="L587">            PreparedStatement statement2 = connection.prepareStatement(&quot;DELETE FROM Projeto where ID=?&quot;);</span>
+<span class="nc" id="L588">            statement2.setInt(1, id);</span>
+<span class="nc" id="L589">            int result=statement2.executeUpdate();</span>
+        }
+<span class="nc" id="L591">        catch (SQLException e) {</span>
+<span class="nc" id="L592">            e.printStackTrace();</span>
+<span class="nc" id="L593">        }</span>
+<span class="nc" id="L594">    }</span>
+    public static void Deletar_Equipe(int id){
+<span class="nc" id="L596">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+        
+       
+       try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L604">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L605">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L606">                PreparedStatement statement = connection.prepareStatement(&quot; select ID from Projeto_Equipe WHERE ID_Equipe=?;&quot;);</span>
+<span class="nc" id="L607">            statement.setInt(1, id);</span>
+<span class="nc" id="L608">            resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L609" title="All 2 branches missed.">            while(resultSet.next()){</span>
+<span class="nc" id="L610">                Deletar_Projeto_Equipe(resultSet.getInt(1));</span>
+                
+            }
+<span class="nc" id="L613">            statement = connection.prepareStatement(&quot; select ID from Funcionario_Equipe WHERE ID_Equipe=?;&quot;);</span>
+<span class="nc" id="L614">            statement.setInt(1, id);</span>
+<span class="nc" id="L615">            resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L616" title="All 2 branches missed.">            while(resultSet.next()){</span>
+                
+<span class="nc" id="L618">                Deletar_Funcionario_Equipe(resultSet.getInt(1));</span>
+            }
+<span class="nc" id="L620">            PreparedStatement statement2 = connection.prepareStatement(&quot;DELETE FROM Equipe where ID=?&quot;);</span>
+<span class="nc" id="L621">            statement2.setInt(1, id);</span>
+<span class="nc" id="L622">            int result=statement2.executeUpdate();</span>
+        }
+<span class="nc" id="L624">        catch (SQLException e) {</span>
+<span class="nc" id="L625">            e.printStackTrace();</span>
+<span class="nc" id="L626">        }</span>
+<span class="nc" id="L627">    }</span>
+    public static int ProcurarIDTarefa(String tarefa,int id_projeto){
+<span class="nc" id="L629">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+        
+       
+       try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L637">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L638">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L639">                PreparedStatement statement = connection.prepareStatement(&quot; select ID from Tarefa where ID_projeto=? and nomeT=?;&quot;);</span>
+<span class="nc" id="L640">                statement.setInt(1, id_projeto);</span>
+<span class="nc" id="L641">                statement.setString(2, tarefa);</span>
+                int id;
+<span class="nc" id="L643">                resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L644" title="All 2 branches missed.">            if (resultSet.next() == false) {</span>
+<span class="nc" id="L645">               System.out.println(&quot;ResultSet in empty in Java&quot;);</span>
+<span class="nc" id="L646">               connection.close();</span>
+<span class="nc" id="L647">               return -1;</span>
+           } else {
+                
+<span class="nc" id="L650">                id=resultSet.getInt(1);</span>
+<span class="nc" id="L651">                connection.close();</span>
+<span class="nc" id="L652">                return id;</span>
+              
+           }
+       }
+<span class="nc" id="L656">        catch (SQLException e) {</span>
+<span class="nc" id="L657">            e.printStackTrace();</span>
+<span class="nc" id="L658">            return -1;</span>
+        }
+    }
+    public static void Deletar_Funcionario_Equipe(int ID){
+<span class="nc" id="L662">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        int resultSet ;
+        
+        try {
+<span class="nc" id="L668">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L669">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+                PreparedStatement statement;
+<span class="nc" id="L671">            statement = connection.prepareStatement(&quot; delete from Funcionario_Equipe where (ID=?);&quot;);</span>
+<span class="nc" id="L672">            statement.setInt(1, ID);</span>
+<span class="nc" id="L673">            resultSet=statement.executeUpdate();</span>
+        }
+<span class="nc" id="L675">        catch (SQLException e) {</span>
+<span class="nc" id="L676">            e.printStackTrace();</span>
+<span class="nc" id="L677">        }</span>
+<span class="nc" id="L678">    }</span>
+    public static void Deletar_Funcionario(String email){
+<span class="nc" id="L680">        String connectionUrl =</span>
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+        
+       
+       try {
+            //String sql=&quot;SELECT * FROM dbo.CEO WHERE email=? AND senha=? ;&quot;;
+<span class="nc" id="L688">            DriverManager.registerDriver(new com.mysql.jdbc.Driver());</span>
+<span class="nc" id="L689">        Connection connection = DriverManager.getConnection(connectionUrl);</span>
+<span class="nc" id="L690">                PreparedStatement statement = connection.prepareStatement(&quot; select ID from Funcionario_Equipe WHERE email_Funcionario=?;&quot;);</span>
+<span class="nc" id="L691">            statement.setString(1, email);</span>
+<span class="nc" id="L692">            resultSet=statement.executeQuery();</span>
+<span class="nc bnc" id="L693" title="All 2 branches missed.">            while(resultSet.next()){</span>
+                
+<span class="nc" id="L695">                Deletar_Funcionario_Equipe(resultSet.getInt(1));</span>
+            }
+<span class="nc" id="L697">            PreparedStatement statement2 = connection.prepareStatement(&quot;DELETE FROM Funcionario where email=?&quot;);</span>
+<span class="nc" id="L698">            statement2.setString(1, email);</span>
+<span class="nc" id="L699">            int result=statement2.executeUpdate();</span>
+        }
+<span class="nc" id="L701">        catch (SQLException e) {</span>
+<span class="nc" id="L702">            e.printStackTrace();</span>
+<span class="nc" id="L703">        }</span>
+<span class="nc" id="L704">    }</span>
+    public static void main(String[] args) {
+        /*String nome=&quot;edy&quot;,Rg=&quot;23434354&quot;;
+        boolean gerente=true;
+        String email=&quot;didi@gmail1.com&quot;;
+        String empresa=&quot;nettttflix&quot;;
+        String senha=&quot;12345&quot;,Depp=&quot;anime&quot;;
+        System.out.println(&quot;EXISTE=&quot;+validarEmail(email));
+        Date data = Date.valueOf(&quot;1997-03-31&quot;);
+        String tel=&quot;4002--8921&quot;;
+        String nomeD=&quot;series&quot;,ID_dep=&quot;122&quot;,cood=&quot;edu&quot;;
+        Departamento dep=new Departamento();
+        Equipe e=new Equipe();
+        e.setID_departamento(ID_dep);
+        e.setNome(&quot;animação&quot;);
+        //Criar_Equipe(e);
+        e.setID(5);
+        dep.setCoodenador(cood);
+        dep.setEmpresa(empresa);
+        dep.setID(ID_dep);
+        dep.setNome(nomeD);
+        Deletar_Funcionario(&quot;111@aa.com&quot;);
+        //Deletar_Equipe(6);
+        //Deletar_Funcionario_Equipe(5);
+        //Deletar_Projeto(7);
+        //Cadastrar_Departamento(dep);
+        Funcionario fun=new Funcionario();
+        fun.setDepartamento(dep);
+        fun.setID_departamento(ID_dep);
+        fun.setEmail(email);
+        fun.setEmpresa(empresa);
+        fun.setStatus_GERENTE(gerente);
+        fun.setNome(nome);
+        fun.setRG(Rg);
+        //Atribuir_Funcionario_Equipe(fun,e);
+        //Cadastrar_Funcionario(fun);
+        Projeto p=new Projeto();
+        String nomeP=&quot;BANCO DE DADOS&quot;;
+        p.setNome(nomeP);
+        p.setPrazoD(data);
+        p.setID_Departamento(ID_dep);
+        //Criar_Projeto(p);
+        p.setId(ProcurarIDProjeto(p.getNome(),p.getID_Departamento()));
+        //Atribuir_Projeto_Equipe(p,e);
+        String Tarefa=&quot;fazer banco&quot;;
+        //Atribuir_Tarefa_Projeto(p.getId(),Tarefa);
+        System.out.println(ProcurarFuncionario(&quot;didi@gmail1.com&quot;,&quot;12345&quot;).getEmpresa());
+        CEO c=new CEO();
+        c.setNome(nome);
+        c.setEmpresa(empresa);
+        c.setTelefone(tel);
+        c.setSenha(senha);
+        c.setEmail(email);
+        //Inserir(c);
+        //alterar(c);
+        //Inserir(c);
+        //excluir(email);
+        System.out.println(ProcurarIDTarefa(&quot;exemplo&quot;,6)); 
+        //Deletar_Tarefa(5);
+        String connectionUrl =
+                &quot;jdbc:mysql://WEBSOFT.chlhdmd5beba.us-east-1.rds.amazonaws.com:3306/WEBSOFT?user=SGE&amp;password=alebeodeiadualboot2020&quot;;
+        
+        ResultSet resultSet ;
+     
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement statement = connection.createStatement();) {
+
+            // Create and execute a SELECT SQL statement.
+            String insertSql = &quot;INSERT INTO CEO (nomeCeo,empresa,email ,senha,telefone,dataN) VALUES \n&quot; + &quot;(&quot;+&quot;'&quot;+nome+&quot;'&quot;+&quot;,&quot;+&quot;'&quot;+empresa+&quot;'&quot;+&quot;, &quot;+&quot;'&quot;+email+&quot;'&quot;+&quot;, &quot;+&quot;'&quot;+senha+&quot;'&quot;+&quot;,&quot;+&quot;'&quot;+tel+&quot;'&quot;+&quot;,&quot;+&quot;'&quot;+data+&quot;'&quot;+ &quot;);&quot; ;
+            String selectSql = &quot;SELECT * from CEO &quot;;
+            //statement.executeUpdate(insertSql);
+            resultSet=statement.executeQuery(selectSql);
+            if(resultSet!=null){
+           System.out.println(&quot;teste\n&quot;);
+            //}
+            // Print results from select statement
+           while (resultSet!=null&amp;&amp;resultSet.next()) {
+               int i=1;
+               while(i&lt;6){
+                    System.out.print(resultSet.getString(i)+&quot;    &quot; );
+                    i++;
+                    
+               }
+               System.out.print(&quot;\n&quot; );
+            }
+           
+            connection.close();   
+        }
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        */
+<span class="nc" id="L797">    }</span>
+};
+    
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
