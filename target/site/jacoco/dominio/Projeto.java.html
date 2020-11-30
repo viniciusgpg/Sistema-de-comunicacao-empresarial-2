@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Projeto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Projeto Maven</a> &gt; <a href="index.source.html" class="el_package">dominio</a> &gt; <span class="el_source">Projeto.java</span></div><h1>Projeto.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dominio;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import java.sql.*;
+/**
+ *
+ * @author Thiago
+ */
+<span class="nc" id="L16">public class Projeto {</span>
+    private int id;
+    private String ID_Departamento;
+    private String nome;
+    private String prazo;
+    private Date prazoD;
+<span class="nc" id="L22">    private List&lt;String&gt; tarefas = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L23">    private List&lt;Equipe&gt;Equipe_projeto=new ArrayList&lt;Equipe&gt;();</span>
+
+    public String getID_Departamento() {
+<span class="nc" id="L26">        return ID_Departamento;</span>
+    }
+
+    public void setID_Departamento(String ID_Departamento) {
+<span class="nc" id="L30">        this.ID_Departamento = ID_Departamento;</span>
+<span class="nc" id="L31">    }</span>
+
+    public List&lt;String&gt; getTarefas() {
+<span class="nc" id="L34">        return tarefas;</span>
+    }
+
+    
+
+    public Date getPrazoD() {
+<span class="nc" id="L40">        return prazoD;</span>
+    }
+
+    public void setPrazoD(Date prazoD) {
+<span class="nc" id="L44">        this.prazoD = prazoD;</span>
+<span class="nc" id="L45">    }</span>
+
+    public int getId() {
+<span class="nc" id="L48">        return id;</span>
+    }
+
+    public void setId(int id) {
+<span class="nc" id="L52">        this.id = id;</span>
+<span class="nc" id="L53">    }</span>
+    
+    public void print_projeto(){
+<span class="nc" id="L56">        System.out.println(&quot;nome= &quot;+nome+&quot; prazo= &quot;+prazo);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        for(int i=0;i&lt;tarefas.size();i++){</span>
+<span class="nc" id="L58">            System.out.println(&quot;tarefa&quot;+i+&quot;= &quot;+tarefas.get(i) ) ;</span>
+        
+        }
+    
+<span class="nc" id="L62">    }</span>
+    public String getNome() {
+<span class="nc" id="L64">        return nome;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="nc" id="L68">        this.nome = nome;</span>
+<span class="nc" id="L69">    }</span>
+
+    public String getPrazo() {
+<span class="nc" id="L72">        return prazo;</span>
+    }
+
+    public void setPrazo(String prazo) {
+<span class="nc" id="L76">        this.prazo = prazo;</span>
+<span class="nc" id="L77">    }</span>
+
+    public String getTarefas(String tarefa) {
+<span class="nc" id="L80">        int posicao = tarefas.indexOf(tarefa);</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if(posicao &gt;= 0){</span>
+<span class="nc" id="L82">          return tarefas.get(posicao);</span>
+        }else{
+<span class="nc" id="L84">          return &quot;Vazio&quot;;</span>
+        }
+    }
+
+    public void Criar_Tarefa(String tarefa) {
+<span class="nc" id="L89">        System.out.println(&quot;Limite de Tarefas: &quot;+tarefas.size());</span>
+<span class="nc" id="L90">        tarefas.add(tarefa);</span>
+<span class="nc" id="L91">    }</span>
+    
+    public void Deletar_Tarefa(String tarefa){
+        
+<span class="nc bnc" id="L95" title="All 2 branches missed.">       if(tarefas.size() == 0){</span>
+<span class="nc" id="L96">           System.out.println(&quot;Lista Tarefa vazia&quot;);</span>
+<span class="nc" id="L97">           return;</span>
+       }
+<span class="nc" id="L99">       tarefas.remove(tarefa);</span>
+<span class="nc" id="L100">       return;</span>
+   }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
